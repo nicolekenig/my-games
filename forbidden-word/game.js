@@ -22,6 +22,7 @@ function init() {
 
     // Host: lobby controls
     document.getElementById('btnStart').addEventListener('click', () => socket.emit('startRound'));
+    document.getElementById('btnNextStart').addEventListener('click', () => socket.emit('nextDescriber'));
 
     // Describer: forbidden word
     document.getElementById('btnForbidden').addEventListener('click', () => socket.emit('forbiddenUsed'));
