@@ -17,8 +17,6 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-/* ── Home-screen-only styles ───────────────────────────────────── */
-
 .page {
     min-height: 100vh;
     max-width: 640px;
@@ -29,7 +27,6 @@ body {
     gap: 2.8rem;
 }
 
-/* Header */
 header { display: flex; flex-direction: column; gap: .4rem; }
 
 .logo-row {
@@ -63,7 +60,6 @@ h1 {
     padding-left: 48px;
 }
 
-/* Player section */
 .section-label {
     font-size: .68rem;
     letter-spacing: .12em;
@@ -105,7 +101,6 @@ h1 {
 }
 .greeting.visible { opacity: 1; }
 
-/* Games list */
 .games-section { display: flex; flex-direction: column; gap: .75rem; }
 
 .game-card {
@@ -120,6 +115,7 @@ h1 {
     text-decoration: none;
     color: var(--text);
     transition: border-color .2s, box-shadow .2s, transform .15s;
+    cursor: pointer;
 }
 
 .game-card:hover {
@@ -157,16 +153,6 @@ h1 {
 .play-btn:hover {
     background: #9389f9;
     box-shadow: 0 0 14px rgba(124,111,247,.3);
-}
-
-.empty {
-    text-align: center;
-    padding: 3rem 1rem;
-    border: 1px dashed var(--border);
-    border-radius: 14px;
-    color: var(--muted);
-    font-size: .8rem;
-    line-height: 1.9;
 }
 
 footer {

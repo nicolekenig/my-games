@@ -5,6 +5,8 @@ const { Server } = require('socket.io');
 
 // ─── Serve static files ───────────────────────────────────────────
 const server = http.createServer((req, res) => {
+    console.log('Request:', req.url); // Debug log
+    
     // Resolve the file path
     let filePath = '.' + req.url;
     if (filePath === './') {
@@ -30,13 +32,16 @@ const server = http.createServer((req, res) => {
     fs.readFile(filePath, (error, content) => {
         if (error) {
             if (error.code === 'ENOENT') {
+                console.log('404 - File not found:', filePath); // Debug log
                 res.writeHead(404, { 'Content-Type': 'text/html' });
-                res.end('<h1>404 - File Not Found</h1>', 'utf-8');
+                res.end('<h1>404 - File Not Found</h1><p>Looking for: ' + filePath + '</p>', 'utf-8');
             } else {
+                console.log('500 - Server error:', error.code); // Debug log
                 res.writeHead(500);
                 res.end('Server Error: ' + error.code);
             }
         } else {
+            console.log('200 - File served:', filePath); // Debug log
             res.writeHead(200, { 'Content-Type': contentType });
             res.end(content, 'utf-8');
         }
@@ -69,9 +74,9 @@ const CARDS = [
 
 // ─── Room state ───────────────────────────────────────────────────
 const room = {
-    players:        {},   // socketId → { name, isHost }
+    players:        {},
     hostId:         null,
-    playerOrder:    [],   // socketIds in join order
+    playerOrder:    [],
     describerIndex: 0,
     currentCard:    null,
     phase:          'lobby',
@@ -99,6 +104,8 @@ function pickCard() {
 const io = new Server(server, { cors: { origin: '*' } });
 
 io.on('connection', socket => {
+    console.log('New connection:', socket.id);
+    
     socket.on('join', name => {
         const isFirst = Object.keys(room.players).length === 0;
         room.players[socket.id] = { name: name || 'Player', isHost: isFirst };
@@ -139,6 +146,7 @@ io.on('connection', socket => {
     });
 
     socket.on('disconnect', () => {
+        console.log('Disconnected:', socket.id);
         const wasHost = socket.id === room.hostId;
         delete room.players[socket.id];
         room.playerOrder = room.playerOrder.filter(id => id !== socket.id);

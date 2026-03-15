@@ -8,8 +8,6 @@
 </head>
 <body>
 <div class="page">
-
-    <!-- Header -->
     <header>
         <div class="logo-row">
             <div class="logo-icon">🎮</div>
@@ -18,48 +16,38 @@
         <p class="subtitle">Pick a game · play · beat your score</p>
     </header>
 
-    <!-- Player name -->
     <section class="player-section">
         <p class="section-label">Player</p>
-        <input
-                id="player-input"
-                type="text"
-                placeholder="Enter your name…"
-                maxlength="24"
-                autocomplete="off"
-                spellcheck="false"
-        >
+        <input id="player-input" type="text" placeholder="Enter your name…" maxlength="24" autocomplete="off">
         <p class="greeting" id="greeting"></p>
     </section>
 
-    <!-- Games -->
-    <section class="games-section" id="games-list"></section>
+    <section class="games-section">
+        <a href="forbidden-word/index.html" class="game-card" id="game-link">
+            <div>
+                <div class="game-name">Forbidden Word</div>
+                <div class="game-desc">Multiplayer party word game</div>
+            </div>
+            <button class="play-btn" tabindex="-1">&#9654; Play</button>
+        </a>
+    </section>
 
     <footer>MY-GAMES · DARK ARCADE</footer>
-
 </div>
+
 <script>
-    /* ─────────────────────────────────────────────
-       GAMES REGISTRY
-       Add an entry here whenever you add a new game folder.
-    ───────────────────────────────────────────── */
-    const GAMES = [
-        {
-            name: 'Forbidden Word',
-            desc: 'Multiplayer party word game',
-            path: 'forbidden-word/index.html',
-            requiresServer: true  // This game needs Node.js server
-        },
-        // Add more games here as you create them
-    ];
-
-    /* ── Player name ── */
-    const input    = document.getElementById('player-input');
+    const input = document.getElementById('player-input');
     const greeting = document.getElementById('greeting');
+    const gameLink = document.getElementById('game-link');
 
+    // Load saved name
     const saved = localStorage.getItem('playerName');
-    if (saved) { input.value = saved; showGreeting(saved); }
+    if (saved) {
+        input.value = saved;
+        showGreeting(saved);
+    }
 
+    // Save name on input
     input.addEventListener('input', () => {
         const name = input.value.trim();
         localStorage.setItem('playerName', name);
@@ -75,56 +63,12 @@
         }
     }
 
-    /* ── Build game cards ── */
-    const list = document.getElementById('games-list');
-
-    if (!GAMES.length) {
-        list.innerHTML = '<div class="empty">No games yet.<br>Add a folder under <code>my-games/</code> and register it in the GAMES array.</div>';
-    } else {
-        GAMES.forEach(game => {
-            const card = document.createElement('a');
-            card.className = 'game-card';
-            card.href      = game.path;
-            card.innerHTML =
-                '<div>' +
-                '<div class="game-name">' + game.name + '</div>' +
-                '<div class="game-desc">' + game.desc + '</div>' +
-                '</div>' +
-                '<button class="play-btn" tabindex="-1">&#9654; Play</button>';
-
-            /* Forward the player name as ?player=Alice */
-            card.addEventListener('click', function(e) {
-                e.preventDefault();
-
-                // Check if this game requires a server
-                if (game.requiresServer) {
-                    // Check if server is running
-                    fetch('/socket.io/')
-                        .then(() => {
-                            // Server is running, proceed to game
-                            const name = input.value.trim() || 'Player';
-                            window.location.href = game.path + '?player=' + encodeURIComponent(name);
-                        })
-                        .catch(() => {
-                            // Server not running
-                            alert('⚠️ This game requires a server!\n\n' +
-                                'To play Forbidden Word:\n' +
-                                '1. Open terminal in the my-games folder\n' +
-                                '2. Run: npm install\n' +
-                                '3. Run: npm start\n' +
-                                '4. Open http://localhost:3000\n\n' +
-                                'This game won\'t work on GitHub Pages - it needs real-time multiplayer!');
-                        });
-                } else {
-                    // Regular game, just navigate
-                    const name = input.value.trim() || 'Player';
-                    window.location.href = game.path + '?player=' + encodeURIComponent(name);
-                }
-            });
-
-            list.appendChild(card);
-        });
-    }
+    // Add player name to game link
+    gameLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const name = input.value.trim() || 'Player';
+        window.location.href = 'forbidden-word/index.html?player=' + encodeURIComponent(name);
+    });
 </script>
 </body>
 </html>
