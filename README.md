@@ -1,114 +1,77 @@
-# My Games - Complete Working Project
+# My Games
+
+Local multiplayer party games — plain HTML + CSS + JavaScript + Socket.IO.  
+No frameworks, no build tools, mobile-friendly, dark mode.
+
+## 🎮 Games Included
+
+1. **🚫 Forbidden Word** — Describe a word without using forbidden words
+2. **🎭 Emoji Charades** — Describe a word using only emojis
 
 ## 🚀 Quick Start
 
-### 1. Install Dependencies
 ```bash
+# 1. Install dependencies
 npm install
-```
 
-### 2. Start Server
-```bash
+# 2. Start the server
 npm start
-```
 
-### 3. Open Browser
-```
+# 3. Open in browser
 http://localhost:3000
 ```
 
----
+## 📱 Multiplayer Setup
+
+All players must be on the **same Wi-Fi network**:
+
+1. Find your computer's IP address:
+    - **Windows:** Run `ipconfig` in CMD
+    - **Mac/Linux:** Run `ifconfig` or `ip addr`
+
+2. Share with friends: `http://YOUR-IP:3000`
+    - Example: `http://192.168.1.5:3000`
+
+3. Everyone opens that URL on their phone/tablet
 
 ## 📁 Project Structure
 
 ```
 my-games/
-├── server.js              ← Node.js server (handles files + multiplayer)
-├── package.json           ← Dependencies
-├── index.html             ← Home page
-├── style.css              ← Home page styles
+├── index.html              ← Home screen
+├── style.css               ← Home styles
+├── server.js               ← Node.js + Socket.IO server
+├── package.json            ← Dependencies
 │
 ├── shared/
-│   └── utils.js           ← Helper functions
+│   └── utils.js            ← Shared helpers
 │
-└── forbidden-word/
-    ├── index.html         ← Game page
-    ├── game.js            ← Game logic
-    └── style.css          ← Game styles
+├── forbidden-word/
+│   ├── index.html
+│   ├── game.js
+│   ├── style.css
+│   └── README.md
+│
+└── emoji-charades/
+    ├── index.html
+    ├── game.js
+    ├── style.css
+    └── README.md
 ```
 
----
+## 🎨 Design
 
-## ✅ How It Works
+- **Dark mode** — Consistent purple accent (#7c6ff7)
+- **Mobile-first** — Touch-friendly buttons, responsive layout
+- **Minimal code** — Each game under 200 lines of JS
 
-1. **Start server:** `npm start`
-2. **Server runs on port 3000**
-3. **Server serves all files** (index.html, CSS, JS, etc.)
-4. **Socket.IO handles multiplayer** communication
-5. **Players connect** via browser to `localhost:3000`
+## 🛠️ Tech Stack
 
----
+- Plain HTML + CSS + JavaScript
+- Socket.IO for real-time multiplayer
+- Node.js server
+- No frameworks, no build step
 
-## 🎮 To Play
+## 📝 License
 
-1. Open `http://localhost:3000` in browser
-2. Enter your name
-3. Click "Play" on Forbidden Word
-4. First player becomes host
-5. Host clicks "Start Round"
-6. Play the game!
-
----
-
-## 🌐 Multiplayer (Same Wi-Fi)
-
-### Find Your IP:
-**Mac/Linux:**
-```bash
-ifconfig | grep "inet "
-```
-
-**Windows:**
-```bash
-ipconfig
-```
-
-### Share With Friends:
-```
-http://YOUR-IP:3000
-Example: http://192.168.1.5:3000
-```
-
----
-
-## 🛠️ Troubleshooting
-
-### Error: "Cannot find module 'socket.io'"
-**Fix:** Run `npm install`
-
-### Error: "Port 3000 already in use"
-**Fix:** Change port in `server.js`:
-```javascript
-const PORT = 3001; // Change this
-```
-
-### 404 Error
-**Make sure:**
-- Server is running (`npm start`)
-- You're going to `http://localhost:3000` (not opening file directly)
-- All files are in correct folders
-
----
-
-## ✨ This Project Includes
-
-- ✅ Working server (serves files + Socket.IO)
-- ✅ Home page with player name
-- ✅ Forbidden Word multiplayer game
-- ✅ Dark mode design
-- ✅ Mobile-friendly
-- ✅ Debug logging in server
-
----
-
-**Ready to play!** 🎮
+Free to use and modify!

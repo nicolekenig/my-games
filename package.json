@@ -1,7 +1,7 @@
 {
   "name": "my-games",
   "version": "1.0.0",
-  "description": "Local multiplayer games",
+  "description": "Local multiplayer & single-player games — plain HTML + CSS + JS, dark mode, mobile-friendly",
   "scripts": {
     "start": "node server.js"
   },
