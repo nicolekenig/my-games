@@ -1,10 +1,11 @@
 {
-  "name": "${PROJECT_NAME}",
+  "name": "my-games",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Local multiplayer & single-player games — plain HTML + CSS + JS, dark mode, mobile-friendly",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
-  "private": true
+  "dependencies": {
+    "socket.io": "^4.7.5"
+  }
 }

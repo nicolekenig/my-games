@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forbidden Word</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+<h1>🚫 Forbidden Word</h1>
+
+<!-- JOIN -->
+<div id="joinScreen" class="screen active">
+    <div class="card">
+        <label class="field-label">Your name</label>
+        <input id="nameInput" type="text" placeholder="Enter your name…" maxlength="20" autocomplete="off"/>
+        <button id="btnJoin" class="btn-primary">Join Game</button>
+    </div>
+</div>
+
+<!-- LOBBY -->
+<div id="lobbyScreen" class="screen">
+    <div class="card">
+        <div class="section-title">Players in room</div>
+        <div id="playerList" class="player-list"></div>
+    </div>
+    <div id="lobbyStatus" class="status-box status-waiting">Waiting for the host to start the round…</div>
+    <div id="hostControls" class="host-controls hidden">
+        <button id="btnStart" class="btn-primary">▶ Start Round</button>
+    </div>
+</div>
+
+<!-- DESCRIBING -->
+<div id="describingScreen" class="screen">
+    <div class="card">
+        <div class="section-title">Players</div>
+        <div id="playerList2" class="player-list"></div>
+    </div>
+    <div id="myCard" class="card hidden">
+        <div class="card-label">Describe this word</div>
+        <div id="cardWord" class="card-word"></div>
+        <div id="forbiddenList" class="forbidden-list"></div>
+        <button id="btnForbidden" class="btn-danger">🚫 I said a forbidden word</button>
+    </div>
+    <div id="guessStatus" class="status-box status-describing hidden">
+        <span class="big-emoji">🎤</span>
+        <strong id="describerName"></strong> is describing…<br/>
+        <span class="hint">Listen and guess the word!</span>
+    </div>
+    <div id="hostRoundControls" class="host-controls hidden">
+        <button id="btnGuessed" class="btn-success">✅ Word Guessed!</button>
+        <button id="btnNext" class="btn-secondary">⏭ Next Describer</button>
+    </div>
+</div>
+
+<!-- ROUND ENDED -->
+<div id="endedScreen" class="screen">
+    <div id="endedBox" class="status-box"></div>
+    <div id="revealCard" class="card hidden">
+        <div class="card-label">The word was</div>
+        <div id="revealWord" class="card-word"></div>
+        <div id="revealForbidden" class="forbidden-list"></div>
+    </div>
+    <div id="hostEndControls" class="host-controls hidden">
+        <button id="btnNewRound" class="btn-primary">▶ New Round</button>
+        <button id="btnNewRoundNext" class="btn-secondary">⏭ New Round + Next Describer</button>
+    </div>
+    <div id="nonHostEndStatus" class="status-box status-waiting hidden">Waiting for host to start next round…</div>
+</div>
+
+<script src="../shared/utils.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
