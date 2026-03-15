@@ -1,14 +1,20 @@
 const http = require('http');
 const fs   = require('fs');
 const path = require('path');
+const url  = require('url');
 const { Server } = require('socket.io');
 
 // ─── Serve static files ───────────────────────────────────────────
 const server = http.createServer((req, res) => {
-    console.log('Request:', req.url); // Debug log
-    
+    // Parse URL to remove query parameters
+    const parsedUrl = url.parse(req.url);
+    const pathname = parsedUrl.pathname;
+
+    console.log('Request URL:', req.url);
+    console.log('Pathname (without query):', pathname);
+
     // Resolve the file path
-    let filePath = '.' + req.url;
+    let filePath = '.' + pathname;
     if (filePath === './') {
         filePath = './index.html';
     }
@@ -32,16 +38,16 @@ const server = http.createServer((req, res) => {
     fs.readFile(filePath, (error, content) => {
         if (error) {
             if (error.code === 'ENOENT') {
-                console.log('404 - File not found:', filePath); // Debug log
+                console.log('404 - File not found:', filePath);
                 res.writeHead(404, { 'Content-Type': 'text/html' });
                 res.end('<h1>404 - File Not Found</h1><p>Looking for: ' + filePath + '</p>', 'utf-8');
             } else {
-                console.log('500 - Server error:', error.code); // Debug log
+                console.log('500 - Server error:', error.code);
                 res.writeHead(500);
                 res.end('Server Error: ' + error.code);
             }
         } else {
-            console.log('200 - File served:', filePath); // Debug log
+            console.log('200 - File served:', filePath);
             res.writeHead(200, { 'Content-Type': contentType });
             res.end(content, 'utf-8');
         }
@@ -105,7 +111,7 @@ const io = new Server(server, { cors: { origin: '*' } });
 
 io.on('connection', socket => {
     console.log('New connection:', socket.id);
-    
+
     socket.on('join', name => {
         const isFirst = Object.keys(room.players).length === 0;
         room.players[socket.id] = { name: name || 'Player', isHost: isFirst };
