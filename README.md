@@ -1,5 +1,30 @@
 # My Games — Project Structure
 
+## ⚠️ IMPORTANT - How to Run
+
+### For Local Play (with Node.js server for multiplayer games):
+
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Start the server
+npm start
+
+# 3. Open in browser
+http://localhost:3000
+```
+
+### For GitHub Pages (static hosting):
+
+**Note:** Multiplayer games like "Forbidden Word" **will NOT work** on GitHub Pages because they require a real-time server (Socket.IO).
+
+When you click a multiplayer game on GitHub Pages, you'll see an error message explaining this.
+
+**Solution:** Run the games locally with `npm start` or deploy to a platform that supports Node.js (Heroku, Render, Railway, etc.)
+
+---
+
 ## Overview
 
 All games share a single WebStorm project rooted at `my-games/`.
@@ -67,16 +92,16 @@ Every game's `index.html` follows this exact pattern:
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Game Name</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Name</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Game Name</h1>
-  <canvas id="game-canvas"></canvas>
-  <script src="../shared/utils.js"></script>
-  <script src="game.js"></script>
+<h1>Game Name</h1>
+<canvas id="game-canvas"></canvas>
+<script src="../shared/utils.js"></script>
+<script src="game.js"></script>
 </body>
 </html>
 ```
@@ -95,30 +120,30 @@ let state = {};
 
 // ─── Init ─────────────────────────────────────────────────────────
 function init() {
-  // set up canvas size, initial state
+    // set up canvas size, initial state
 }
 
 // ─── Update ───────────────────────────────────────────────────────
 function update() {
-  // game logic — called every frame
+    // game logic — called every frame
 }
 
 // ─── Draw ─────────────────────────────────────────────────────────
 function draw() {
-  CTX.clearRect(0, 0, CANVAS.width, CANVAS.height);
-  // render everything
+    CTX.clearRect(0, 0, CANVAS.width, CANVAS.height);
+    // render everything
 }
 
 // ─── Loop ─────────────────────────────────────────────────────────
 function loop() {
-  update();
-  draw();
-  requestAnimationFrame(loop);
+    update();
+    draw();
+    requestAnimationFrame(loop);
 }
 
 // ─── Input ────────────────────────────────────────────────────────
 document.addEventListener('keydown', (e) => {
-  // handle keyboard
+    // handle keyboard
 });
 
 // ─── Start ────────────────────────────────────────────────────────
@@ -135,28 +160,28 @@ loop();
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  background: #0d0d0d;
-  color: #f0f0f0;
-  font-family: system-ui, sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 24px 16px;
-  min-height: 100vh;
+    background: #0d0d0d;
+    color: #f0f0f0;
+    font-family: system-ui, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
+    min-height: 100vh;
 }
 
 h1 {
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: #7c6ff7;
-  margin-bottom: 16px;
-  letter-spacing: 0.02em;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #7c6ff7;
+    margin-bottom: 16px;
+    letter-spacing: 0.02em;
 }
 
 #game-canvas {
-  background: #1a1a1a;
-  border: 1px solid #2a2a2a;
-  display: block;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    display: block;
 }
 
 /* ─── Game-specific overrides below ─────────────────────────────── */

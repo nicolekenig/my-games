@@ -44,7 +44,12 @@
        Add an entry here whenever you add a new game folder.
     ───────────────────────────────────────────── */
     const GAMES = [
-        { name: 'Forbidden Word', desc: 'Multiplayer party word game', path: 'forbidden-word/index.html' },
+        {
+            name: 'Forbidden Word',
+            desc: 'Multiplayer party word game',
+            path: 'forbidden-word/index.html',
+            requiresServer: true  // This game needs Node.js server
+        },
         // Add more games here as you create them
     ];
 
@@ -89,9 +94,30 @@
 
             /* Forward the player name as ?player=Alice */
             card.addEventListener('click', function(e) {
-                const name = input.value.trim();
-                if (name) {
-                    e.preventDefault();
+                e.preventDefault();
+
+                // Check if this game requires a server
+                if (game.requiresServer) {
+                    // Check if server is running
+                    fetch('/socket.io/')
+                        .then(() => {
+                            // Server is running, proceed to game
+                            const name = input.value.trim() || 'Player';
+                            window.location.href = game.path + '?player=' + encodeURIComponent(name);
+                        })
+                        .catch(() => {
+                            // Server not running
+                            alert('⚠️ This game requires a server!\n\n' +
+                                'To play Forbidden Word:\n' +
+                                '1. Open terminal in the my-games folder\n' +
+                                '2. Run: npm install\n' +
+                                '3. Run: npm start\n' +
+                                '4. Open http://localhost:3000\n\n' +
+                                'This game won\'t work on GitHub Pages - it needs real-time multiplayer!');
+                        });
+                } else {
+                    // Regular game, just navigate
+                    const name = input.value.trim() || 'Player';
                     window.location.href = game.path + '?player=' + encodeURIComponent(name);
                 }
             });
