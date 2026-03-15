@@ -5,27 +5,41 @@ const { Server } = require('socket.io');
 
 // ─── Serve static files ───────────────────────────────────────────
 const server = http.createServer((req, res) => {
-    // Map URL paths to filesystem
-    const routes = {
-        '/':                 'forbidden-word/index.html',
-        '/game.js':          'forbidden-word/game.js',
-        '/style.css':        'forbidden-word/style.css',
-        '/shared/utils.js':  'shared/utils.js',
+    // Resolve the file path
+    let filePath = '.' + req.url;
+    if (filePath === './') {
+        filePath = './index.html';
+    }
+
+    // Determine the content type
+    const extname = String(path.extname(filePath)).toLowerCase();
+    const mimeTypes = {
+        '.html': 'text/html',
+        '.js':   'application/javascript',
+        '.css':  'text/css',
+        '.json': 'application/json',
+        '.png':  'image/png',
+        '.jpg':  'image/jpg',
+        '.gif':  'image/gif',
+        '.svg':  'image/svg+xml',
+        '.ico':  'image/x-icon'
     };
 
-    // Resolve path relative to this file's directory
-    const base    = __dirname;
-    const relPath = routes[req.url] || null;
+    const contentType = mimeTypes[extname] || 'application/octet-stream';
 
-    if (!relPath) { res.writeHead(404); res.end('Not found'); return; }
-
-    const ext  = path.extname(relPath);
-    const mime = { '.html':'text/html', '.js':'application/javascript', '.css':'text/css' }[ext] || 'text/plain';
-
-    fs.readFile(path.join(base, relPath), (err, data) => {
-        if (err) { res.writeHead(404); res.end('Not found'); return; }
-        res.writeHead(200, { 'Content-Type': mime });
-        res.end(data);
+    fs.readFile(filePath, (error, content) => {
+        if (error) {
+            if (error.code === 'ENOENT') {
+                res.writeHead(404, { 'Content-Type': 'text/html' });
+                res.end('<h1>404 - File Not Found</h1>', 'utf-8');
+            } else {
+                res.writeHead(500);
+                res.end('Server Error: ' + error.code);
+            }
+        } else {
+            res.writeHead(200, { 'Content-Type': contentType });
+            res.end(content, 'utf-8');
+        }
     });
 });
 
@@ -140,6 +154,7 @@ io.on('connection', socket => {
 // ─── Start ────────────────────────────────────────────────────────
 const PORT = 3000;
 server.listen(PORT, '0.0.0.0', () => {
-    console.log(`\n🚫 Forbidden Word Game → http://localhost:${PORT}`);
-    console.log('   Share your local IP with friends on the same Wi-Fi\n');
+    console.log(`\n🎮 My Games Server`);
+    console.log(`   → http://localhost:${PORT}`);
+    console.log(`   Share your local IP with friends on the same Wi-Fi\n`);
 });

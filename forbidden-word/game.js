@@ -34,6 +34,10 @@ let state = {
 function init() {
     const socket = io();
 
+    // Pre-fill name from URL or localStorage
+    const playerName = getPlayerName();
+    document.getElementById('nameInput').value = playerName;
+
     // — Join button & Enter key —
     document.getElementById('btnJoin').addEventListener('click', () => join(socket));
     document.getElementById('nameInput').addEventListener('keydown', e => {
@@ -100,7 +104,7 @@ function init() {
     socket.on('yourCard', card => {
         document.getElementById('cardWord').textContent = card.word;
         document.getElementById('forbiddenList').innerHTML =
-            card.forbidden.map(w => `<span class="forbidden-tag">🚫 ${esc(w)}</span>`).join('');
+            card.forbidden.map(w => `<span class="forbidden-tag">🚫 ${escapeHtml(w)}</span>`).join('');
         show('myCard');
         hide('guessStatus');
     });
@@ -122,7 +126,7 @@ function init() {
         if (card) {
             document.getElementById('revealWord').textContent = card.word;
             document.getElementById('revealForbidden').innerHTML =
-                card.forbidden.map(w => `<span class="forbidden-tag">🚫 ${esc(w)}</span>`).join('');
+                card.forbidden.map(w => `<span class="forbidden-tag">🚫 ${escapeHtml(w)}</span>`).join('');
             show('revealCard');
         }
         showScreen('endedScreen');
@@ -152,8 +156,8 @@ function renderPlayers(players, listId) {
             p.id === state.myId ? '<span class="badge badge-you">You</span>'     : '',
         ].join('');
         div.innerHTML = `
-      <div class="player-avatar" style="background:${color}">${esc(p.name[0].toUpperCase())}</div>
-      <div class="player-name">${esc(p.name)}</div>
+      <div class="player-avatar" style="background:${color}">${escapeHtml(p.name[0].toUpperCase())}</div>
+      <div class="player-name">${escapeHtml(p.name)}</div>
       ${badges}
     `;
         list.appendChild(div);
@@ -191,18 +195,6 @@ function showScreen(id) {
 function show(id)   { document.getElementById(id).classList.remove('hidden'); }
 function hide(id)   { document.getElementById(id).classList.add('hidden'); }
 function toggle(id, visible) { visible ? show(id) : hide(id); }
-
-function esc(s) {
-    return String(s)
-        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-function nameToColor(name) {
-    const palette = ['#7c6ff7','#ff3b5c','#ff8c42','#22c55e','#38bdf8','#fb923c','#a3e635'];
-    let h = 0;
-    for (let i = 0; i < name.length; i++) h = name.charCodeAt(i) + ((h << 5) - h);
-    return palette[Math.abs(h) % palette.length];
-}
 
 // ─── Start ────────────────────────────────────────────────────────
 init();

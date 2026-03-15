@@ -20,12 +20,6 @@ h1 {
     letter-spacing: 0.02em;
 }
 
-#game-canvas {
-    background: #1a1a1a;
-    border: 1px solid #2a2a2a;
-    display: block;
-}
-
 /* ─── Game-specific overrides ────────────────────────────────────── */
 
 /* Screens */
@@ -50,7 +44,7 @@ h1 {
     font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 1.1px;
-    color: #555;
+    color: #666;
 }
 
 /* Input */
@@ -99,13 +93,13 @@ button:disabled { opacity: 0.3; cursor: not-allowed; }
     line-height: 1.5;
     text-align: center;
 }
-.status-waiting    { background: #1a1a1a; border: 1px solid #2a2a2a; color: #555; }
+.status-waiting    { background: #1a1a1a; border: 1px solid #2a2a2a; color: #666; }
 .status-describing { background: #12102a; border: 1px solid #3a3470; color: #a89af0; }
 .status-fail       { background: #1a0a0a; border: 1px solid #5c1a1a; color: #e05555; }
 .status-success    { background: #0a1a0f; border: 1px solid #1a5c32; color: #22c55e; }
 
 .big-emoji { font-size: 2rem; display: block; margin-bottom: 6px; }
-.hint      { font-size: 0.82rem; color: #555; }
+.hint      { font-size: 0.82rem; color: #666; }
 
 /* Player list */
 .player-list { display: flex; flex-direction: column; gap: 8px; }
@@ -143,14 +137,14 @@ button:disabled { opacity: 0.3; cursor: not-allowed; }
 }
 .badge-host      { background: #1a1200; color: #ff8c42; border: 1px solid #ff8c42; }
 .badge-describer { background: #120a1a; color: #7c6ff7; border: 1px solid #7c6ff7; }
-.badge-you       { background: #1a1a1a; color: #555;    border: 1px solid #2a2a2a; }
+.badge-you       { background: #1a1a1a; color: #666;    border: 1px solid #2a2a2a; }
 
 /* Word card */
 .card-label {
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    color: #555;
+    color: #666;
 }
 
 .card-word {
