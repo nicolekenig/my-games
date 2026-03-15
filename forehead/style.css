@@ -1,0 +1,190 @@
+/* ─── Base (dark theme) ──────────────────────────────────────────── */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background: #0d0d0d;
+    color: #f0f0f0;
+    font-family: system-ui, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
+    min-height: 100vh;
+}
+
+h1 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #7c6ff7;
+    margin-bottom: 16px;
+    letter-spacing: 0.02em;
+}
+
+/* ─── Screens ────────────────────────────────────────────────────── */
+.screen {
+    display: none;
+    width: 100%;
+    max-width: 480px;
+    flex-direction: column;
+    gap: 16px;
+}
+.screen.active { display: flex; }
+
+/* ─── Timer Card ──────────────────────────────────────────────────── */
+.timer-card {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 20px;
+    padding: 32px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.timer-display {
+    font-size: clamp(3.5rem, 12vw, 5rem);
+    font-weight: 800;
+    letter-spacing: -2px;
+    color: #f0f0f0;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+    transition: color 0.3s;
+}
+
+/* ─── Character Card ──────────────────────────────────────────────── */
+.character-card {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 20px;
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    min-height: 180px;
+    justify-content: center;
+}
+
+.card-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #666;
+}
+
+.character-name {
+    font-size: clamp(1.8rem, 6vw, 2.5rem);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    text-align: center;
+    color: #7c6ff7;
+    line-height: 1.2;
+}
+
+/* ─── Stats Row ───────────────────────────────────────────────────── */
+.stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.stat-box {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: #666;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+}
+
+.stat-correct .stat-value { color: #22c55e; }
+.stat-passed .stat-value { color: #ff8c42; }
+
+/* ─── Controls ────────────────────────────────────────────────────── */
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.button-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+button {
+    cursor: pointer;
+    font-family: system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    border: none;
+    border-radius: 12px;
+    padding: 15px 18px;
+    width: 100%;
+    transition: transform 0.1s, opacity 0.1s, box-shadow 0.2s;
+}
+
+button:active {
+    transform: scale(0.97);
+    opacity: 0.85;
+}
+
+button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background: #7c6ff7;
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(124, 111, 247, 0.3);
+}
+
+.btn-secondary {
+    background: #1a1a1a;
+    color: #f0f0f0;
+    border: 1px solid #2a2a2a;
+}
+
+.btn-danger {
+    background: #c0392b;
+    color: #fff;
+}
+
+.btn-success {
+    background: #22c55e;
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(34, 197, 94, 0.25);
+}
+
+/* ─── Mobile Optimization ─────────────────────────────────────────── */
+@media (max-width: 420px) {
+    body { padding: 20px 12px; }
+    h1 { font-size: 1.4rem; }
+    .timer-display { font-size: 3rem; }
+    .character-name { font-size: 1.6rem; }
+    button { font-size: 0.95rem; padding: 14px 16px; }
+}
+
+/* ─── Touch Improvements ──────────────────────────────────────────── */
+@media (hover: none) {
+    button:active {
+        transform: scale(0.95);
+    }
+}

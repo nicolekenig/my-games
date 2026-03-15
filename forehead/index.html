@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forehead</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>🎭 Forehead</h1>
+
+<!-- GAME SCREEN -->
+<div id="gameScreen" class="screen active">
+    <!-- Timer Display -->
+    <div class="timer-card">
+        <div class="timer-display" id="timerDisplay">1:00</div>
+    </div>
+
+    <!-- Character Card -->
+    <div class="character-card">
+        <div class="card-label">Who am I?</div>
+        <div class="character-name" id="characterName">Press Start to Begin</div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+        <div class="stat-box stat-correct">
+            <div class="stat-label">Correct</div>
+            <div class="stat-value" id="correctCount">0</div>
+        </div>
+        <div class="stat-box stat-passed">
+            <div class="stat-label">Passed</div>
+            <div class="stat-value" id="passedCount">0</div>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+        <button id="btnStartPause" class="btn-primary">▶ Start</button>
+        <div class="button-row">
+            <button id="btnReset" class="btn-secondary">⏱ Reset Timer</button>
+            <button id="btnNewChar" class="btn-secondary">🎭 New Character</button>
+        </div>
+        <div class="button-row">
+            <button id="btnPass" class="btn-danger">⏭ Pass</button>
+            <button id="btnCorrect" class="btn-success">✅ Correct</button>
+        </div>
+    </div>
+</div>
+
+<script src="../shared/utils.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
