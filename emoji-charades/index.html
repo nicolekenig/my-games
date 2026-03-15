@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Charades</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+<h1>🎭 Emoji Charades</h1>
+
+<!-- JOIN SCREEN -->
+<div id="joinScreen" class="screen active">
+    <div class="card">
+        <label class="field-label">Your name</label>
+        <input id="nameInput" type="text" placeholder="Enter your name…" maxlength="20" autocomplete="off"/>
+        <button id="btnJoin" class="btn-primary">Join Game</button>
+    </div>
+</div>
+
+<!-- LOBBY SCREEN -->
+<div id="lobbyScreen" class="screen">
+    <div class="card">
+        <div class="section-title">Players in room</div>
+        <div id="playerList" class="player-list"></div>
+    </div>
+    <div id="lobbyStatus" class="status-box status-waiting">Waiting for the host to start the round…</div>
+    <div id="hostControls" class="host-controls hidden">
+        <button id="btnStart" class="btn-primary">▶ Start Round</button>
+    </div>
+</div>
+
+<!-- PLAYING SCREEN -->
+<div id="playingScreen" class="screen">
+    <div class="card">
+        <div class="section-title">Players</div>
+        <div id="playerList2" class="player-list"></div>
+    </div>
+
+    <!-- DESCRIBER VIEW -->
+    <div id="describerCard" class="card hidden">
+        <div class="card-label">Describe this using only emojis</div>
+        <div id="secretWord" class="secret-word"></div>
+        <div class="emoji-input-area">
+            <textarea id="emojiInput" class="emoji-textarea" placeholder="Type your emojis here… 🎉"></textarea>
+            <button id="btnSendEmoji" class="btn-primary">Send Emoji Clue</button>
+        </div>
+    </div>
+
+    <!-- GUESSER VIEW -->
+    <div id="guesserCard" class="card hidden">
+        <div class="card-label">
+            <span id="describerName"></span> is giving clues…
+        </div>
+        <div id="emojiClues" class="emoji-clues-display"></div>
+        <div class="guess-input-area">
+            <input id="guessInput" type="text" placeholder="Type your guess…" autocomplete="off"/>
+            <button id="btnSubmitGuess" class="btn-success">Submit Guess</button>
+        </div>
+    </div>
+
+    <div id="hostRoundControls" class="host-controls hidden">
+        <button id="btnSkip" class="btn-secondary">⏭ Skip Word</button>
+        <button id="btnNextDescriber" class="btn-secondary">⏭ Next Describer</button>
+    </div>
+</div>
+
+<!-- END SCREEN -->
+<div id="endedScreen" class="screen">
+    <div id="endedBox" class="status-box"></div>
+    <div id="revealCard" class="card">
+        <div class="card-label">The answer was</div>
+        <div id="revealWord" class="secret-word"></div>
+    </div>
+    <div id="hostEndControls" class="host-controls hidden">
+        <button id="btnNewRound" class="btn-primary">▶ New Round</button>
+        <button id="btnNewRoundNext" class="btn-secondary">⏭ New Round + Next Describer</button>
+    </div>
+    <div id="nonHostEndStatus" class="status-box status-waiting hidden">Waiting for host to start next round…</div>
+</div>
+
+<script src="../shared/utils.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
