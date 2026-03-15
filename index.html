@@ -4,58 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Games</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="shared/style.css">
     <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        :root {
-            --bg:        #0d0d0d;
-            --surface:   #1a1a1a;
-            --border:    #2a2a2a;
-            --text:      #f0f0f0;
-            --muted:     #666;
-            --accent:    #7c6ff7;
-            --accent-dim:#4b469a;
-            --glow:      rgba(124,111,247,.18);
-        }
-
-        html, body {
-            height: 100%;
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Syne', sans-serif;
-        }
-
-        /* ── Noise grain overlay ── */
-        body::before {
-            content: '';
-            position: fixed; inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
-            background-size: 200px 200px;
-            pointer-events: none;
-            z-index: 0;
-        }
+        /* ── Home-screen-only styles ───────────────────────────────────── */
 
         .page {
-            position: relative; z-index: 1;
             min-height: 100vh;
-            max-width: 680px;
+            max-width: 640px;
             margin: 0 auto;
             padding: 3rem 1.5rem 5rem;
             display: flex;
             flex-direction: column;
-            gap: 3rem;
+            gap: 2.8rem;
         }
 
-        /* ── Header ── */
-        header {
-            display: flex;
-            flex-direction: column;
-            gap: .4rem;
-        }
+        /* Header */
+        header { display: flex; flex-direction: column; gap: .4rem; }
 
-        .logo-line {
+        .logo-row {
             display: flex;
             align-items: center;
             gap: .75rem;
@@ -68,18 +34,10 @@
             display: grid; place-items: center;
             font-size: 1.1rem;
             flex-shrink: 0;
-            box-shadow: 0 0 18px var(--glow);
-        }
-
-        h1 {
-            font-size: 1.9rem;
-            font-weight: 800;
-            letter-spacing: -.03em;
-            line-height: 1;
+            box-shadow: 0 0 18px rgba(124,111,247,.25);
         }
 
         .subtitle {
-            font-family: 'DM Mono', monospace;
             font-size: .72rem;
             color: var(--muted);
             letter-spacing: .08em;
@@ -87,35 +45,25 @@
             padding-left: 48px;
         }
 
-        /* ── Player name ── */
-        .player-section {
-            display: flex;
-            flex-direction: column;
-            gap: .6rem;
-        }
-
+        /* Player section */
         .section-label {
-            font-family: 'DM Mono', monospace;
             font-size: .68rem;
             letter-spacing: .12em;
             text-transform: uppercase;
             color: var(--muted);
+            margin-bottom: .5rem;
         }
 
-        .name-row {
-            display: flex;
-            gap: .75rem;
-            align-items: center;
-        }
+        .player-section { display: flex; flex-direction: column; }
 
         #player-input {
-            flex: 1;
+            width: 100%;
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 10px;
             padding: .75rem 1rem;
             color: var(--text);
-            font-family: 'Syne', sans-serif;
+            font-family: system-ui, sans-serif;
             font-size: 1rem;
             font-weight: 700;
             outline: none;
@@ -126,21 +74,21 @@
 
         #player-input:focus {
             border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--glow);
+            box-shadow: 0 0 0 3px rgba(124,111,247,.15);
         }
 
         .greeting {
-            font-family: 'DM Mono', monospace;
             font-size: .8rem;
             color: var(--accent);
+            margin-top: .55rem;
             min-height: 1.2em;
-            transition: opacity .3s;
             opacity: 0;
+            transition: opacity .3s;
         }
         .greeting.visible { opacity: 1; }
 
-        /* ── Games grid ── */
-        .games-section { display: flex; flex-direction: column; gap: .8rem; }
+        /* Games list */
+        .games-section { display: flex; flex-direction: column; gap: .75rem; }
 
         .game-card {
             background: var(--surface);
@@ -154,27 +102,24 @@
             text-decoration: none;
             color: var(--text);
             transition: border-color .2s, box-shadow .2s, transform .15s;
-            cursor: pointer;
         }
 
         .game-card:hover {
             border-color: var(--accent);
-            box-shadow: 0 0 20px var(--glow);
+            box-shadow: 0 0 22px rgba(124,111,247,.18);
             transform: translateY(-2px);
         }
 
-        .game-info { display: flex; flex-direction: column; gap: .25rem; }
-
         .game-name {
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             font-weight: 700;
-            letter-spacing: -.02em;
+            letter-spacing: -.01em;
         }
 
         .game-desc {
-            font-family: 'DM Mono', monospace;
-            font-size: .7rem;
+            font-size: .72rem;
             color: var(--muted);
+            margin-top: .2rem;
         }
 
         .play-btn {
@@ -184,46 +129,38 @@
             border: none;
             border-radius: 8px;
             padding: .5rem 1.1rem;
-            font-family: 'Syne', sans-serif;
+            font-family: system-ui, sans-serif;
             font-size: .85rem;
             font-weight: 700;
-            letter-spacing: .02em;
             cursor: pointer;
             transition: background .2s, box-shadow .2s;
-            box-shadow: 0 0 0 0 var(--glow);
         }
 
         .play-btn:hover {
             background: #9389f9;
-            box-shadow: 0 0 14px var(--glow);
+            box-shadow: 0 0 14px rgba(124,111,247,.3);
         }
 
-        /* ── Empty state (no games yet) ── */
         .empty {
             text-align: center;
             padding: 3rem 1rem;
             border: 1px dashed var(--border);
             border-radius: 14px;
             color: var(--muted);
-            font-family: 'DM Mono', monospace;
             font-size: .8rem;
-            line-height: 1.8;
+            line-height: 1.9;
         }
 
-        /* ── Footer ── */
         footer {
             margin-top: auto;
             text-align: center;
-            font-family: 'DM Mono', monospace;
             font-size: .65rem;
             color: #333;
             letter-spacing: .06em;
         }
 
-        /* ── Responsive ── */
         @media (max-width: 420px) {
             .page { padding: 2rem 1rem 4rem; }
-            h1 { font-size: 1.5rem; }
             .game-name { font-size: 1rem; }
         }
     </style>
@@ -231,8 +168,9 @@
 <body>
 <div class="page">
 
+    <!-- Header -->
     <header>
-        <div class="logo-line">
+        <div class="logo-row">
             <div class="logo-icon">🎮</div>
             <h1>My Games</h1>
         </div>
@@ -241,38 +179,33 @@
 
     <!-- Player name -->
     <section class="player-section">
-        <span class="section-label">Player</span>
-        <div class="name-row">
-            <input
-                    id="player-input"
-                    type="text"
-                    placeholder="Enter your name…"
-                    maxlength="24"
-                    autocomplete="off"
-                    spellcheck="false"
-            >
-        </div>
-        <span class="greeting" id="greeting"></span>
+        <p class="section-label">Player</p>
+        <input
+                id="player-input"
+                type="text"
+                placeholder="Enter your name…"
+                maxlength="24"
+                autocomplete="off"
+                spellcheck="false"
+        >
+        <p class="greeting" id="greeting"></p>
     </section>
 
-    <!-- Games list -->
-    <section class="games-section" id="games-list">
-        <!-- Cards are injected by JS — add entries in the GAMES array below -->
-    </section>
+    <!-- Games -->
+    <section class="games-section" id="games-list"></section>
 
-    <footer>MY-GAMES · DARK ARCADE · ALL RIGHTS RESERVED</footer>
+    <footer>MY-GAMES · DARK ARCADE</footer>
 
 </div>
-
 <script>
     /* ─────────────────────────────────────────────
        GAMES REGISTRY
-       Add / remove entries here as you add games.
+       Add an entry here whenever you add a new game folder.
     ───────────────────────────────────────────── */
     const GAMES = [
-        { name: 'Snake',  desc: 'Classic grid crawler',   path: 'snake/index.html'  },
-        { name: 'Tetris', desc: 'Stack & clear lines',    path: 'tetris/index.html' },
-        // { name: 'Pong', desc: 'Two-player paddle game', path: 'pong/index.html' },
+        { name: 'Snake',  desc: 'Classic grid crawler',  path: 'snake/index.html'  },
+        { name: 'Tetris', desc: 'Stack and clear lines',  path: 'tetris/index.html' },
+        // { name: 'Pong', desc: 'Two-player paddle duel', path: 'pong/index.html' },
     ];
 
     /* ── Player name ── */
@@ -290,7 +223,7 @@
 
     function showGreeting(name) {
         if (name) {
-            greeting.textContent = `👾 Hey, ${name}! Choose a game below.`;
+            greeting.textContent = '👾 Hey, ' + name + '! Choose a game below.';
             greeting.classList.add('visible');
         } else {
             greeting.classList.remove('visible');
@@ -300,30 +233,26 @@
     /* ── Build game cards ── */
     const list = document.getElementById('games-list');
 
-    if (GAMES.length === 0) {
-        list.innerHTML = `
-      <div class="empty">
-        No games yet.<br>
-        Add a folder under <code>my-games/</code> and register it above.
-      </div>`;
+    if (!GAMES.length) {
+        list.innerHTML = '<div class="empty">No games yet.<br>Add a folder under <code>my-games/</code> and register it in the GAMES array.</div>';
     } else {
         GAMES.forEach(game => {
             const card = document.createElement('a');
-            card.className  = 'game-card';
-            card.href       = game.path;
-            card.innerHTML  = `
-        <div class="game-info">
-          <span class="game-name">${game.name}</span>
-          <span class="game-desc">${game.desc}</span>
-        </div>
-        <button class="play-btn" tabindex="-1">▶ Play</button>`;
+            card.className = 'game-card';
+            card.href      = game.path;
+            card.innerHTML =
+                '<div>' +
+                '<div class="game-name">' + game.name + '</div>' +
+                '<div class="game-desc">' + game.desc + '</div>' +
+                '</div>' +
+                '<button class="play-btn" tabindex="-1">&#9654; Play</button>';
 
-            /* Pass player name via URL query string so each game can read it */
-            card.addEventListener('click', e => {
+            /* Forward the player name as ?player=Alice */
+            card.addEventListener('click', function(e) {
                 const name = input.value.trim();
                 if (name) {
                     e.preventDefault();
-                    window.location.href = `${game.path}?player=${encodeURIComponent(name)}`;
+                    window.location.href = game.path + '?player=' + encodeURIComponent(name);
                 }
             });
 
