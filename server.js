@@ -5,7 +5,10 @@ const { Server } = require('socket.io');
 
 // ─── Serve static files ───────────────────────────────────────────
 const server = http.createServer((req, res) => {
-    let filePath = '.' + req.url;
+    // Remove query parameters from the URL
+    const url = req.url.split('?')[0];
+    let filePath = '.' + url;
+
     if (filePath === './') {
         filePath = './index.html';
     }
