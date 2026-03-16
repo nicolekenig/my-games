@@ -1,4 +1,4 @@
-/* ─── Base (dark theme) ──────────────────────────────────────────── */
+/* ─── Dark Glow Theme ─────────────────────────────────────────────── */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 .back-btn {
@@ -7,20 +7,24 @@
     left: 12px;
     z-index: 1000;
     padding: 6px 14px;
-    background: rgba(255,255,255,0.1);
-    color: #fff;
+    background: rgba(167,139,250,0.08);
+    color: #a78bfa;
     text-decoration: none;
     border-radius: 8px;
     font-size: 0.85rem;
     font-weight: 600;
-    border: 1px solid rgba(255,255,255,0.2);
-    transition: background 0.2s;
+    border: 1px solid rgba(167,139,250,0.25);
+    transition: background 0.2s, box-shadow 0.2s;
 }
-.back-btn:hover { background: rgba(255,255,255,0.2); }
+.back-btn:hover {
+    background: rgba(167,139,250,0.18);
+    box-shadow: 0 0 16px rgba(167,139,250,0.3);
+}
 
 body {
-    background: #0d0d0d;
-    color: #f0f0f0;
+    background: #07070f;
+    background-image: radial-gradient(ellipse at 50% 0%, rgba(167,139,250,0.07) 0%, transparent 65%);
+    color: #e8e8ff;
     font-family: system-ui, sans-serif;
     display: flex;
     flex-direction: column;
@@ -32,9 +36,10 @@ body {
 h1 {
     font-size: 1.6rem;
     font-weight: 600;
-    color: #7c6ff7;
+    color: #a78bfa;
     margin-bottom: 16px;
     letter-spacing: 0.02em;
+    text-shadow: 0 0 24px rgba(167,139,250,0.6);
 }
 
 /* ─── Screens ────────────────────────────────────────────────────── */
@@ -49,8 +54,8 @@ h1 {
 
 /* ─── Timer Card ──────────────────────────────────────────────────── */
 .timer-card {
-    background: #1a1a1a;
-    border: 1px solid #2a2a2a;
+    background: #0e0e1c;
+    border: 1px solid #1c1c38;
     border-radius: 20px;
     padding: 24px 20px 32px;
     display: flex;
@@ -58,6 +63,7 @@ h1 {
     justify-content: center;
     align-items: center;
     gap: 8px;
+    box-shadow: 0 0 40px rgba(167,139,250,0.08), inset 0 1px 0 rgba(167,139,250,0.08);
 }
 
 .round-badge {
@@ -66,30 +72,33 @@ h1 {
     text-transform: uppercase;
     letter-spacing: 1.5px;
     color: #fff;
-    background: #7c6ff7;
+    background: #a78bfa;
     padding: 4px 14px;
     border-radius: 99px;
-    transition: background 0.3s;
+    transition: background 0.3s, box-shadow 0.3s;
+    box-shadow: 0 0 16px rgba(167,139,250,0.5);
 }
 
 .round-badge.multi-round {
-    background: #ff8c42;
+    background: #fb923c;
+    box-shadow: 0 0 16px rgba(251,146,60,0.5);
 }
 
 .timer-display {
     font-size: clamp(3.5rem, 12vw, 5rem);
     font-weight: 800;
     letter-spacing: -2px;
-    color: #f0f0f0;
+    color: #e8e8ff;
     font-variant-numeric: tabular-nums;
     text-align: center;
-    transition: color 0.3s;
+    transition: color 0.3s, text-shadow 0.3s;
+    text-shadow: 0 0 30px rgba(167,139,250,0.5), 0 0 60px rgba(167,139,250,0.2);
 }
 
 /* ─── Character Card ──────────────────────────────────────────────── */
 .character-card {
-    background: #1a1a1a;
-    border: 1px solid #2a2a2a;
+    background: #0e0e1c;
+    border: 1px solid #1c1c38;
     border-radius: 20px;
     padding: 32px 24px;
     display: flex;
@@ -98,13 +107,14 @@ h1 {
     align-items: center;
     min-height: 180px;
     justify-content: center;
+    box-shadow: 0 0 40px rgba(167,139,250,0.06), inset 0 1px 0 rgba(167,139,250,0.06);
 }
 
 .card-label {
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    color: #666;
+    color: #4a4a72;
 }
 
 .character-name {
@@ -112,8 +122,9 @@ h1 {
     font-weight: 800;
     letter-spacing: -0.5px;
     text-align: center;
-    color: #7c6ff7;
+    color: #a78bfa;
     line-height: 1.2;
+    text-shadow: 0 0 20px rgba(167,139,250,0.6), 0 0 40px rgba(167,139,250,0.25);
 }
 
 /* ─── Stats Row ───────────────────────────────────────────────────── */
@@ -124,21 +135,22 @@ h1 {
 }
 
 .stat-box {
-    background: #1a1a1a;
-    border: 1px solid #2a2a2a;
+    background: #0e0e1c;
+    border: 1px solid #1c1c38;
     border-radius: 14px;
     padding: 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 6px;
+    box-shadow: inset 0 1px 0 rgba(167,139,250,0.05);
 }
 
 .stat-label {
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 1.2px;
-    color: #666;
+    color: #4a4a72;
 }
 
 .stat-value {
@@ -147,8 +159,14 @@ h1 {
     font-variant-numeric: tabular-nums;
 }
 
-.stat-correct .stat-value { color: #22c55e; }
-.stat-passed .stat-value { color: #ff8c42; }
+.stat-correct .stat-value {
+    color: #4ade80;
+    text-shadow: 0 0 16px rgba(74,222,128,0.5);
+}
+.stat-passed .stat-value {
+    color: #fb923c;
+    text-shadow: 0 0 16px rgba(251,146,60,0.5);
+}
 
 /* ─── Controls ────────────────────────────────────────────────────── */
 .controls {
@@ -181,31 +199,46 @@ button:active {
 }
 
 button:disabled {
-    opacity: 0.3;
+    opacity: 0.25;
     cursor: not-allowed;
 }
 
 .btn-primary {
-    background: #7c6ff7;
+    background: #a78bfa;
     color: #fff;
-    box-shadow: 0 4px 16px rgba(124, 111, 247, 0.3);
+    box-shadow: 0 0 20px rgba(167,139,250,0.5), 0 4px 16px rgba(0,0,0,0.4);
+}
+.btn-primary:hover {
+    box-shadow: 0 0 32px rgba(167,139,250,0.7), 0 4px 20px rgba(0,0,0,0.4);
 }
 
 .btn-secondary {
-    background: #1a1a1a;
-    color: #f0f0f0;
-    border: 1px solid #2a2a2a;
+    background: #0e0e1c;
+    color: #e8e8ff;
+    border: 1px solid #1c1c38;
+    box-shadow: inset 0 1px 0 rgba(167,139,250,0.06);
+}
+.btn-secondary:hover {
+    border-color: rgba(167,139,250,0.3);
+    box-shadow: 0 0 14px rgba(167,139,250,0.15), inset 0 1px 0 rgba(167,139,250,0.08);
 }
 
 .btn-danger {
     background: #c0392b;
     color: #fff;
+    box-shadow: 0 0 20px rgba(192,57,43,0.45), 0 4px 16px rgba(0,0,0,0.4);
+}
+.btn-danger:hover {
+    box-shadow: 0 0 30px rgba(248,113,113,0.6), 0 4px 16px rgba(0,0,0,0.4);
 }
 
 .btn-success {
-    background: #22c55e;
+    background: #16a34a;
     color: #fff;
-    box-shadow: 0 4px 16px rgba(34, 197, 94, 0.25);
+    box-shadow: 0 0 20px rgba(74,222,128,0.35), 0 4px 16px rgba(0,0,0,0.4);
+}
+.btn-success:hover {
+    box-shadow: 0 0 30px rgba(74,222,128,0.55), 0 4px 16px rgba(0,0,0,0.4);
 }
 
 /* ─── Mobile Optimization ─────────────────────────────────────────── */
@@ -219,7 +252,5 @@ button:disabled {
 
 /* ─── Touch Improvements ──────────────────────────────────────────── */
 @media (hover: none) {
-    button:active {
-        transform: scale(0.95);
-    }
+    button:active { transform: scale(0.95); }
 }
