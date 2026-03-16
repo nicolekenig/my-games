@@ -37,7 +37,8 @@ let state = {
     correctCount: 0,
     passedCount: 0,
     usedCharacters: [],
-    interval: null
+    interval: null,
+    roundCount: 1        // rounds spent on current character
 };
 
 // ─── Init ─────────────────────────────────────────────────────────
@@ -73,6 +74,9 @@ function startTimer() {
         updateTimerDisplay();
 
         if (state.timeLeft <= 0) {
+            // Time's up — give them another round with the same character
+            state.roundCount++;
+            updateRoundDisplay();
             state.timeLeft = 60;
             updateTimerDisplay();
         }
@@ -94,6 +98,12 @@ function pauseTimer() {
 function resetTimer() {
     state.timeLeft = 60;
     updateTimerDisplay();
+}
+
+function updateRoundDisplay() {
+    const badge = document.getElementById('roundBadge');
+    badge.textContent = `Round ${state.roundCount}`;
+    badge.classList.toggle('multi-round', state.roundCount > 1);
 }
 
 function updateTimerDisplay() {
@@ -127,6 +137,10 @@ function newCharacter() {
     state.currentChar = randomChar;
     state.usedCharacters.push(randomChar);
 
+    // Reset round counter for new character
+    state.roundCount = 1;
+    updateRoundDisplay();
+
     document.getElementById('characterName').textContent = randomChar;
 }
 
@@ -145,7 +159,7 @@ function correctAnswer() {
     state.timeLeft = 60;
     updateTimerDisplay();
 
-    // New character
+    // New character (also resets round counter)
     newCharacter();
 }
 

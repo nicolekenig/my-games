@@ -52,10 +52,28 @@ h1 {
     background: #1a1a1a;
     border: 1px solid #2a2a2a;
     border-radius: 20px;
-    padding: 32px 20px;
+    padding: 24px 20px 32px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 8px;
+}
+
+.round-badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #fff;
+    background: #7c6ff7;
+    padding: 4px 14px;
+    border-radius: 99px;
+    transition: background 0.3s;
+}
+
+.round-badge.multi-round {
+    background: #ff8c42;
 }
 
 .timer-display {
