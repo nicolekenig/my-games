@@ -60,6 +60,7 @@ function init() {
         renderPlayers(players, 'playerList');
         renderPlayers(players, 'playerList2');
         syncMyState(players);
+        hide('myCard');   // reset for everyone; describer's card arrives via yourCard
         updateHostUI();
         updateDescriberUI(players);
         showScreen('describingScreen');
@@ -150,7 +151,9 @@ function updateDescriberUI(players) {
     const desc = players.find(p => p.isDescriber);
     const nameEl = document.getElementById('describerName');
     if (nameEl && desc) nameEl.textContent = desc.name;
-    if (!state.amDescriber) {
+    if (state.amDescriber) {
+        hide('guessStatus');  // card will appear via yourCard event
+    } else {
         hide('myCard');
         show('guessStatus');
     }
