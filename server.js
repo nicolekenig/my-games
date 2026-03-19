@@ -177,14 +177,17 @@ io.on('connection', socket => {
 
     socket.on('forbiddenUsed', () => {
         forbiddenRoom.phase = 'lobby';
-        io.emit('forbiddenFail', { describerId: forbiddenRoom.playerOrder[forbiddenRoom.describerIndex] });
-        io.emit('roundEnded', { card: forbiddenRoom.currentCard, guessed: false });
+        // Auto-advance to next describer in rotation
+        forbiddenRoom.describerIndex = (forbiddenRoom.describerIndex + 1) % forbiddenRoom.playerOrder.length;
+        io.emit('roundEnded', { card: forbiddenRoom.currentCard, guessed: false, players: getForbiddenPlayerList() });
     });
 
     socket.on('wordGuessed', () => {
         if (socket.id !== forbiddenRoom.hostId) return;
         forbiddenRoom.phase = 'lobby';
-        io.emit('roundEnded', { card: forbiddenRoom.currentCard, guessed: true });
+        // Auto-advance to next describer in rotation
+        forbiddenRoom.describerIndex = (forbiddenRoom.describerIndex + 1) % forbiddenRoom.playerOrder.length;
+        io.emit('roundEnded', { card: forbiddenRoom.currentCard, guessed: true, players: getForbiddenPlayerList() });
     });
 
     // ─── EMOJI CHARADES EVENTS ────────────────────────────────────

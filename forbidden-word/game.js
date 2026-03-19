@@ -34,11 +34,8 @@ function init() {
     // Host: end-screen controls
     document.getElementById('btnNewRound').addEventListener('click', () => {
         hide('revealCard');
+        hide('nextDescriberHint');
         socket.emit('startRound');
-    });
-    document.getElementById('btnNewRoundNext').addEventListener('click', () => {
-        hide('revealCard');
-        socket.emit('nextDescriber');
     });
 
     // ─── Socket events ────────────────────────────────────────────
@@ -86,15 +83,7 @@ function init() {
         hide('guessStatus');
     });
 
-    socket.on('forbiddenFail', () => {
-        document.getElementById('endedBox').className = 'status-box status-fail';
-        document.getElementById('endedBox').innerHTML =
-            '<span class="big-emoji">💥</span><strong>Forbidden word spoken!</strong>';
-        showScreen('endedScreen');
-        updateHostUI();
-    });
-
-    socket.on('roundEnded', ({ card, guessed }) => {
+    socket.on('roundEnded', ({ card, guessed, players }) => {
         const box = document.getElementById('endedBox');
         box.className = guessed ? 'status-box status-success' : 'status-box status-fail';
         box.innerHTML  = guessed
@@ -105,6 +94,15 @@ function init() {
             document.getElementById('revealForbidden').innerHTML =
                 card.forbidden.map(w => `<span class="forbidden-tag">🚫 ${escapeHtml(w)}</span>`).join('');
             show('revealCard');
+        }
+        // Show who is up next
+        if (players) {
+            const nextDesc = players.find(p => p.isDescriber);
+            if (nextDesc) {
+                const nextEl = document.getElementById('nextDescriberName');
+                if (nextEl) nextEl.textContent = nextDesc.name;
+                show('nextDescriberHint');
+            }
         }
         showScreen('endedScreen');
         updateHostUI();
