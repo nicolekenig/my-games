@@ -269,9 +269,13 @@ io.on('connection', socket => {
 });
 
 // ─── Start ────────────────────────────────────────────────────────
-const PORT = 3000;
-server.listen(PORT, '0.0.0.0', () => {
-    console.log(`\n🎮 My Games Server`);
-    console.log(`   → http://localhost:${PORT}`);
-    console.log(`   Share your local IP with friends on the same Wi-Fi\n`);
-});
+const PORT = process.env.PORT || 3000;
+if (require.main === module) {
+    server.listen(PORT, '0.0.0.0', () => {
+        console.log(`\n🎮 My Games Server`);
+        console.log(`   → http://localhost:${PORT}`);
+        console.log(`   Share your local IP with friends on the same Wi-Fi\n`);
+    });
+}
+
+module.exports = { server, io, forbiddenRoom, emojiRoom, FORBIDDEN_CARDS, EMOJI_WORDS };

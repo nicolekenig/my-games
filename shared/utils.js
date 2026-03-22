@@ -25,3 +25,7 @@ function nameToColor(name) {
     }
     return palette[Math.abs(hash) % palette.length];
 }
+
+if (typeof module !== 'undefined') {
+    module.exports = { escapeHtml, nameToColor, getPlayerName };
+}

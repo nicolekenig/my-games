@@ -3,9 +3,18 @@
   "version": "1.0.0",
   "description": "Local multiplayer & single-player games — plain HTML + CSS + JS, dark mode, mobile-friendly",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "jest"
   },
   "dependencies": {
     "socket.io": "^4.7.5"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "socket.io-client": "^4.7.5"
+  },
+  "jest": {
+    "testTimeout": 10000,
+    "testEnvironment": "node"
   }
 }
