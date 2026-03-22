@@ -4,7 +4,7 @@ This document is Claude's source of truth for building new games in the My Games
 
 ## 🎮 Project Overview
 
-**What:** Local multiplayer party games + single-player games
+**What:** Networked multiplayer board game companions — digital replacements for paper, pens, and notes in party games
 **Stack:** Plain HTML + CSS + JavaScript + Socket.IO (no frameworks, no build tools)
 **Target:** iPhone, Android, desktop browsers (mobile-first)
 **Code Philosophy:** Minimal, clean, self-documenting code — less than 150 lines per game
@@ -35,6 +35,97 @@ my-games/
 │
 └── [new-game]/             ← Copy any game folder as template
 ```
+
+## 🃏 Game Category: Board Game Companions
+
+This project's primary game type is **Board Game Companions** — digital replacements for the paper, pens, and sticky notes traditionally used in board games. Each game digitizes the words, clues, scoring, or tracking for a real-world party game.
+
+### Core Characteristics
+
+- **Networked multiplayer via Socket.IO** — each player uses their own device; no passing required
+- **Built-in word/data database** — each game ships with its own static dataset (words, categories, prompts, etc.) relevant to that game
+- **Pre-game setup screen (host only)** — before the game starts, the host can:
+  - View and edit the word/data database (add, remove, or modify entries)
+  - Set game rules: time per turn, number of rounds, team size, etc.
+  - Read the rules of the game (displayed in the setup screen)
+- **Each game is fully independent** — no shared state, no cross-game logic
+- **Suitable for 1 or more participants** — some games degrade gracefully to solo play
+
+### Turn-Based Game Requirements
+
+When a game uses player turns:
+- A dedicated **"Next Player's Turn"** button advances the turn (server decides turn order)
+- Only the **active player's device** has action buttons enabled; all other players see a waiting state
+- The server tracks `currentPlayerId` and enforces it — clients cannot act out of turn
+- The turn button is only visible/active on the current player's device (or host's device if host-managed)
+
+### Timed Turn Requirements
+
+When a game has a time limit per turn:
+- A **countdown timer** is displayed prominently on all devices during a turn
+- The **host configures time per turn** in the pre-game setup screen (e.g., 30s, 60s, 90s)
+- When time runs out, the server automatically advances the turn and notifies all clients
+- Timer state lives on the server — clients display it, never control it
+
+### Pre-Game Setup Screen (setupScreen)
+
+Every Board Game Companion should include a `setupScreen` between the lobby and the game. This screen is **host-only** and contains:
+
+1. **Rules panel** — displays the rules of this specific game (static text, collapsible)
+2. **Game settings** — configurable fields relevant to the game:
+   - Time per turn (if timed)
+   - Number of rounds
+   - Any game-specific options
+3. **Word/data editor** — lets the host view the built-in database and optionally:
+   - Remove entries they don't want
+   - Add custom entries for this session
+   - Reset to defaults
+4. **"Start Game" button** — only enabled when at least the minimum number of players have joined
+
+Non-host players on the `setupScreen` see: "Waiting for host to start the game…"
+
+### Screens for Board Game Companions
+
+The standard screen flow is:
+
+```
+joinScreen → lobbyScreen → setupScreen → playingScreen → endedScreen
+```
+
+- `joinScreen` — enter name, join room
+- `lobbyScreen` — waiting for players, host sees "Go to Setup" button when ready
+- `setupScreen` — host configures rules, settings, word database; others wait
+- `playingScreen` — the actual game; turn/timer logic lives here
+- `endedScreen` — scores, winner, "Play Again" button
+
+### Data Structure for Word/Database Games
+
+Each game that uses a word or prompt database should store its data in a `data.js` file:
+
+```
+[game-name]/
+├── index.html
+├── game.js
+├── style.css
+├── data.js     ← word lists, categories, prompts
+└── README.md
+```
+
+`data.js` exports a plain JS object or array. Example structure:
+
+```js
+// data.js
+const GAME_DATA = {
+  categories: {
+    "Animals": ["elephant", "giraffe", "penguin", ...],
+    "Places":  ["Paris", "Tokyo", "Cairo", ...],
+  }
+};
+```
+
+The host's setup screen reads from `GAME_DATA`, allows edits for the session, and the modified list is sent to the server when the game starts. The original `data.js` is never mutated — edits are session-only.
+
+---
 
 ## 🎯 Decision: Multiplayer vs Single-Player?
 
