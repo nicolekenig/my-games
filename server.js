@@ -3,14 +3,66 @@ const fs   = require('fs');
 const path = require('path');
 const { Server } = require('socket.io');
 
+// ─── API helpers ──────────────────────────────────────────────────
+function json(res, status, data) {
+    res.writeHead(status, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(data));
+}
+
+function parseBody(req) {
+    return new Promise(resolve => {
+        let body = '';
+        req.on('data', chunk => body += chunk.toString());
+        req.on('end', () => { try { resolve(JSON.parse(body)); } catch { resolve({}); } });
+    });
+}
+
 // ─── Serve static files ───────────────────────────────────────────
-const server = http.createServer((req, res) => {
+const server = http.createServer(async (req, res) => {
     // Remove query parameters from the URL
     const url = req.url.split('?')[0];
+
+    // ─── Add-Words API ────────────────────────────────────────────
+    if (url === '/api/words/forbidden' && req.method === 'POST') {
+        const { word, forbidden } = await parseBody(req);
+        const normalized = (word || '').trim().toUpperCase();
+        if (!normalized || !Array.isArray(forbidden) || forbidden.length !== 5) {
+            return json(res, 400, { error: 'Word and exactly 5 forbidden words are required' });
+        }
+        if (FORBIDDEN_CARDS.some(c => c.word === normalized)) {
+            return json(res, 409, { error: `"${normalized}" already exists in the Forbidden Word database` });
+        }
+        FORBIDDEN_CARDS.push({ word: normalized, forbidden: forbidden.map(f => (f || '').trim().toLowerCase()) });
+        return json(res, 200, { success: true });
+    }
+
+    if (url === '/api/words/emoji' && req.method === 'POST') {
+        const { word } = await parseBody(req);
+        const normalized = (word || '').trim().toUpperCase();
+        if (!normalized) return json(res, 400, { error: 'Word is required' });
+        if (EMOJI_WORDS.includes(normalized)) {
+            return json(res, 409, { error: `"${normalized}" already exists in the Emoji Charades database` });
+        }
+        EMOJI_WORDS.push(normalized);
+        return json(res, 200, { success: true });
+    }
+
+    if (url === '/api/words/forehead' && req.method === 'POST') {
+        const { word } = await parseBody(req);
+        const normalized = (word || '').trim();
+        if (!normalized) return json(res, 400, { error: 'Character name is required' });
+        if (FOREHEAD_CHARACTERS.some(c => c.toLowerCase() === normalized.toLowerCase())) {
+            return json(res, 409, { error: `"${normalized}" already exists in the Forehead database` });
+        }
+        FOREHEAD_CHARACTERS.push(normalized);
+        return json(res, 200, { success: true });
+    }
+
+    // ─── Static files ─────────────────────────────────────────────
     let filePath = '.' + url;
 
-    if (filePath === './') {
-        filePath = './index.html';
+    if (filePath.endsWith('/')) {
+        filePath += 'index.html';
     }
 
     const extname = String(path.extname(filePath)).toLowerCase();
@@ -113,6 +165,32 @@ function pickForbiddenCard() {
     forbiddenRoom.usedCards.push(idx);
     return FORBIDDEN_CARDS[idx];
 }
+
+// ─── Forehead Characters ──────────────────────────────────────────
+const FOREHEAD_CHARACTERS = [
+    // Movie Stars
+    'Tom Cruise', 'Brad Pitt', 'Leonardo DiCaprio', 'Scarlett Johansson', 'Jennifer Lawrence',
+    'Will Smith', 'Angelina Jolie', 'Johnny Depp', 'Emma Watson', 'Robert Downey Jr.',
+    'Chris Hemsworth', 'Gal Gadot', 'Dwayne Johnson', 'Meryl Streep', 'Morgan Freeman',
+    // Fictional Characters
+    'Harry Potter', 'Batman', 'Superman', 'Wonder Woman', 'Iron Man', 'Spider-Man',
+    'Elsa (Frozen)', 'Darth Vader', 'Sherlock Holmes', 'James Bond', 'Indiana Jones',
+    'Hermione Granger', 'Luke Skywalker', 'Mickey Mouse', 'Shrek',
+    // Singers
+    'Taylor Swift', 'Beyoncé', 'Ed Sheeran', 'Ariana Grande', 'Justin Bieber',
+    'Adele', 'Lady Gaga', 'Drake', 'Rihanna', 'Bruno Mars', 'The Weeknd',
+    'Billie Eilish', 'Post Malone', 'Eminem', 'Madonna',
+    // Models & Influencers
+    'Kim Kardashian', 'Gigi Hadid', 'Bella Hadid', 'Kendall Jenner', 'Cara Delevingne',
+    // Israeli Celebrities
+    'Bar Refaeli', 'Omer Adam', 'Netta Barzilai', 'Lior Raz',
+    'Rotem Sela', 'Yael Shelbia', 'Noa Kirel', 'Eyal Golan', 'Moshe Peretz',
+    'Idan Raichel', 'Keren Peles', 'Sarit Hadad', 'Ivri Lider', 'Shlomo Artzi',
+    'Kobi Peretz', 'Anna Zak', 'Nasrin Kadri', 'Lucy Ayoub', 'Shira Haas',
+    // Sports & Other
+    'Lionel Messi', 'Cristiano Ronaldo', 'LeBron James', 'Serena Williams',
+    'Elon Musk', 'Mark Zuckerberg', 'Oprah Winfrey', 'Barack Obama',
+];
 
 // ─── Emoji Charades Room State ────────────────────────────────────
 const emojiRoom = {
@@ -278,4 +356,4 @@ if (require.main === module) {
     });
 }
 
-module.exports = { server, io, forbiddenRoom, emojiRoom, FORBIDDEN_CARDS, EMOJI_WORDS };
+module.exports = { server, io, forbiddenRoom, emojiRoom, FORBIDDEN_CARDS, EMOJI_WORDS, FOREHEAD_CHARACTERS };
