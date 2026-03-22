@@ -41,6 +41,18 @@ let state = {
     roundCount: 1        // rounds spent on current character
 };
 
+// ─── Merge custom characters from localStorage ────────────────────
+(function mergeCustomChars() {
+    try {
+        const custom = JSON.parse(localStorage.getItem('customForeheadChars') || '[]');
+        custom.forEach(name => {
+            if (name && !CHARACTERS.some(c => c.toLowerCase() === name.toLowerCase())) {
+                CHARACTERS.push(name);
+            }
+        });
+    } catch (e) { /* ignore */ }
+})();
+
 // ─── Init ─────────────────────────────────────────────────────────
 function init() {
     // Button listeners

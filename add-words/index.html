@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Words · My Games</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="page">
+
+    <!-- ── Game Select Screen ─────────────────────────── -->
+    <div id="gameSelectScreen" class="screen active">
+        <a href="/" class="back-btn">← Back</a>
+        <header>
+            <div class="logo-icon">📝</div>
+            <h1>Add Words</h1>
+            <p class="subtitle">Choose a game database to add words to</p>
+        </header>
+
+        <div class="game-select-list">
+            <button class="game-select-btn" data-game="forbidden">
+                <span class="game-icon">🚫</span>
+                <div>
+                    <div class="game-select-name">Forbidden Word</div>
+                    <div class="game-select-desc">Add a word + 5 forbidden clue words</div>
+                </div>
+                <span class="arrow">›</span>
+            </button>
+
+            <button class="game-select-btn" data-game="emoji">
+                <span class="game-icon">😀</span>
+                <div>
+                    <div class="game-select-name">Emoji Charades</div>
+                    <div class="game-select-desc">Add a word or phrase to guess</div>
+                </div>
+                <span class="arrow">›</span>
+            </button>
+
+            <button class="game-select-btn" data-game="forehead">
+                <span class="game-icon">🎭</span>
+                <div>
+                    <div class="game-select-name">Forehead</div>
+                    <div class="game-select-desc">Add a celebrity or character name</div>
+                </div>
+                <span class="arrow">›</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ── Add Word Screen ────────────────────────────── -->
+    <div id="addWordScreen" class="screen">
+        <button id="btnBack" class="back-btn">← Back</button>
+        <header>
+            <div class="logo-icon" id="addIcon">📝</div>
+            <h1 id="addTitle">Add Word</h1>
+            <p class="subtitle" id="addSubtitle"></p>
+        </header>
+
+        <!-- Forbidden Word form -->
+        <form id="forbiddenForm" class="add-form hidden">
+            <label>Word to guess</label>
+            <input id="fw-word" type="text" placeholder="e.g. ELEPHANT" autocomplete="off" spellcheck="false" maxlength="40">
+
+            <label>Forbidden words (exactly 5)</label>
+            <div class="forbidden-inputs">
+                <input class="fw-forbidden" type="text" placeholder="Forbidden 1" autocomplete="off" spellcheck="false" maxlength="30">
+                <input class="fw-forbidden" type="text" placeholder="Forbidden 2" autocomplete="off" spellcheck="false" maxlength="30">
+                <input class="fw-forbidden" type="text" placeholder="Forbidden 3" autocomplete="off" spellcheck="false" maxlength="30">
+                <input class="fw-forbidden" type="text" placeholder="Forbidden 4" autocomplete="off" spellcheck="false" maxlength="30">
+                <input class="fw-forbidden" type="text" placeholder="Forbidden 5" autocomplete="off" spellcheck="false" maxlength="30">
+            </div>
+            <button type="submit" class="submit-btn">Add Card</button>
+        </form>
+
+        <!-- Emoji Charades form -->
+        <form id="emojiForm" class="add-form hidden">
+            <label>Word or phrase to guess</label>
+            <input id="emoji-word" type="text" placeholder="e.g. STAR WARS" autocomplete="off" spellcheck="false" maxlength="60">
+            <button type="submit" class="submit-btn">Add Word</button>
+        </form>
+
+        <!-- Forehead form -->
+        <form id="foreheadForm" class="add-form hidden">
+            <label>Celebrity or character name</label>
+            <input id="forehead-char" type="text" placeholder="e.g. Elon Musk" autocomplete="off" spellcheck="false" maxlength="60">
+            <button type="submit" class="submit-btn">Add Character</button>
+        </form>
+
+        <!-- Feedback -->
+        <div id="feedback" class="feedback hidden"></div>
+    </div>
+
+</div>
+<script src="app.js"></script>
+</body>
+</html>

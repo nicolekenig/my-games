@@ -162,6 +162,32 @@ h1 {
     box-shadow: 0 0 28px var(--glow), 0 0 50px rgba(167,139,250,0.2);
 }
 
+.add-words-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
+}
+
+.add-words-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1.5px solid #f97316;
+    border-radius: 8px;
+    color: #f97316;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 10px 20px;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+}
+
+.add-words-btn:hover {
+    background: #f97316;
+    color: #fff;
+}
+
 footer {
     margin-top: auto;
     text-align: center;
