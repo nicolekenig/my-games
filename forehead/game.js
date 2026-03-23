@@ -42,6 +42,7 @@ let state = {
 };
 
 // ─── Merge custom characters from localStorage ────────────────────
+/** Merges any custom character names saved in localStorage into the CHARACTERS pool. */
 (function mergeCustomChars() {
     try {
         const custom = JSON.parse(localStorage.getItem('customForeheadChars') || '[]');
@@ -54,6 +55,9 @@ let state = {
 })();
 
 // ─── Init ─────────────────────────────────────────────────────────
+/**
+ * Initializes the game by wiring up button listeners and picking the first character.
+ */
 function init() {
     // Button listeners
     document.getElementById('btnStartPause').addEventListener('click', toggleTimer);
@@ -67,6 +71,9 @@ function init() {
 }
 
 // ─── Timer ────────────────────────────────────────────────────────
+/**
+ * Toggles the timer between running and paused states.
+ */
 function toggleTimer() {
     if (state.isRunning) {
         pauseTimer();
@@ -75,6 +82,9 @@ function toggleTimer() {
     }
 }
 
+/**
+ * Starts the countdown timer and updates the button to show a pause option.
+ */
 function startTimer() {
     state.isRunning = true;
     document.getElementById('btnStartPause').textContent = '⏸ Pause';
@@ -95,6 +105,9 @@ function startTimer() {
     }, 1000);
 }
 
+/**
+ * Pauses the countdown timer and resets the button to show a start option.
+ */
 function pauseTimer() {
     state.isRunning = false;
     document.getElementById('btnStartPause').textContent = '▶ Start';
@@ -107,17 +120,20 @@ function pauseTimer() {
     }
 }
 
+/** Resets the timer to 60 seconds without stopping or starting it. */
 function resetTimer() {
     state.timeLeft = 60;
     updateTimerDisplay();
 }
 
+/** Updates the round badge text and highlights it when the current character has used more than one round. */
 function updateRoundDisplay() {
     const badge = document.getElementById('roundBadge');
     badge.textContent = `Round ${state.roundCount}`;
     badge.classList.toggle('multi-round', state.roundCount > 1);
 }
 
+/** Updates the timer display with the current time and changes its color based on urgency. */
 function updateTimerDisplay() {
     const mins = Math.floor(state.timeLeft / 60);
     const secs = state.timeLeft % 60;
@@ -136,6 +152,10 @@ function updateTimerDisplay() {
 }
 
 // ─── Character ────────────────────────────────────────────────────
+/**
+ * Picks a random unused character from the pool and displays it, resetting the round counter.
+ * Resets the used pool if all characters have been shown.
+ */
 function newCharacter() {
     // If all characters used, reset pool
     if (state.usedCharacters.length >= CHARACTERS.length) {
@@ -157,12 +177,14 @@ function newCharacter() {
 }
 
 // ─── Actions ──────────────────────────────────────────────────────
+/** Increments the pass count and advances to the next character. */
 function passCharacter() {
     state.passedCount++;
     document.getElementById('passedCount').textContent = state.passedCount;
     newCharacter();
 }
 
+/** Increments the correct count, resets the timer to 60 seconds, and advances to the next character. */
 function correctAnswer() {
     state.correctCount++;
     document.getElementById('correctCount').textContent = state.correctCount;

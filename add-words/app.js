@@ -2,6 +2,11 @@
 const gameSelectScreen = document.getElementById('gameSelectScreen');
 const addWordScreen    = document.getElementById('addWordScreen');
 
+/**
+ * Switches the active screen by removing 'active' from all screens and adding it to the target.
+ *
+ * @param {string} id - The ID of the screen element to activate.
+ */
 function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
@@ -57,17 +62,25 @@ document.getElementById('btnBack').addEventListener('click', () => {
 });
 
 // ─── Feedback helpers ─────────────────────────────────────────────
+/**
+ * Displays a feedback message with the given style type.
+ *
+ * @param {string} msg - The message text to display.
+ * @param {string} type - The CSS modifier class (e.g. 'success' or 'error').
+ */
 function showFeedback(msg, type) {
     const el = document.getElementById('feedback');
     el.textContent = msg;
     el.className = 'feedback ' + type;
 }
+/** Hides the feedback element and clears its text. */
 function clearFeedback() {
     const el = document.getElementById('feedback');
     el.className = 'feedback hidden';
     el.textContent = '';
 }
 
+/** Clears all input fields across every add-word form. */
 function resetForms() {
     document.querySelectorAll('.add-form input').forEach(i => i.value = '');
 }
@@ -75,6 +88,13 @@ function resetForms() {
 // ─── API call ─────────────────────────────────────────────────────
 const ADMIN_TOKEN = window.ADMIN_TOKEN || 'change-me';
 
+/**
+ * Posts a JSON payload to the given API endpoint with admin authentication.
+ *
+ * @param {string} endpoint - The API URL to POST to.
+ * @param {Object} body - The request payload to send as JSON.
+ * @returns {Promise<{ok: boolean, status: number, data: Object}>} The response status and parsed JSON body.
+ */
 async function postWord(endpoint, body) {
     const res = await fetch(endpoint, {
         method: 'POST',

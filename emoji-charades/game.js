@@ -7,6 +7,10 @@ let state = {
 };
 
 // ─── Init ─────────────────────────────────────────────────────────
+/**
+ * Initializes the game by connecting to the server, pre-filling the name input,
+ * wiring up all button and keyboard listeners, and registering Socket.IO event handlers.
+ */
 function init() {
     const socket = io();
 
@@ -123,11 +127,22 @@ function init() {
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────
+/**
+ * Emits an emoji:join event with the player's name from the name input field.
+ *
+ * @param {Object} socket - The Socket.IO client instance.
+ */
 function join(socket) {
     const name = document.getElementById('nameInput').value.trim() || 'Player';
     socket.emit('emoji:join', name);
 }
 
+/**
+ * Reads the guess input, emits it to the server, and clears the input field.
+ * Does nothing if the input is empty.
+ *
+ * @param {Object} socket - The Socket.IO client instance.
+ */
 function submitGuess(socket) {
     const guess = document.getElementById('guessInput').value.trim();
     if (guess) {
@@ -136,15 +151,33 @@ function submitGuess(socket) {
     }
 }
 
+/**
+ * Switches the active screen by removing 'active' from all screens and adding it to the target.
+ *
+ * @param {string} id - The ID of the screen element to activate.
+ */
 function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
 }
 
+/** @param {string} id - Removes the 'hidden' class from the element with this ID. */
 function show(id)   { document.getElementById(id).classList.remove('hidden'); }
+/** @param {string} id - Adds the 'hidden' class to the element with this ID. */
 function hide(id)   { document.getElementById(id).classList.add('hidden'); }
+/**
+ * Shows or hides an element based on a boolean flag.
+ *
+ * @param {string} id - The ID of the element to toggle.
+ * @param {boolean} visible - Whether the element should be visible.
+ */
 function toggle(id, visible) { visible ? show(id) : hide(id); }
 
+/**
+ * Syncs the local state flags (isHost, amDescriber) from the authoritative player list.
+ *
+ * @param {Array<Object>} players - The full player list broadcast from the server.
+ */
 function syncMyState(players) {
     const me = players.find(p => p.id === state.myId);
     if (!me) return;
@@ -152,6 +185,12 @@ function syncMyState(players) {
     state.amDescriber = me.isDescriber;
 }
 
+/**
+ * Renders the player list into a DOM element, showing avatars, names, and role badges.
+ *
+ * @param {Array<Object>} players - The player list to render.
+ * @param {string} listId - The ID of the container element to populate.
+ */
 function renderPlayers(players, listId) {
     const list = document.getElementById(listId);
     list.innerHTML = '';
@@ -173,6 +212,7 @@ function renderPlayers(players, listId) {
     });
 }
 
+/** Shows or hides host-only control panels based on whether the local player is the host. */
 function updateHostUI() {
     toggle('hostControls',       state.isHost);
     toggle('hostRoundControls',  state.isHost);
@@ -180,6 +220,12 @@ function updateHostUI() {
     toggle('nonHostEndStatus',  !state.isHost);
 }
 
+/**
+ * Updates the describer name label and shows the appropriate card (describer or guesser view)
+ * depending on whether the local player is the current describer.
+ *
+ * @param {Array<Object>} players - The full player list from the server.
+ */
 function updateDescriberUI(players) {
     const desc = players.find(p => p.isDescriber);
     const nameEl = document.getElementById('describerName');
@@ -191,6 +237,11 @@ function updateDescriberUI(players) {
     }
 }
 
+/**
+ * Appends a new emoji clue to the clue display and scrolls to the bottom.
+ *
+ * @param {string} clue - The emoji clue string sent by the describer.
+ */
 function addClue(clue) {
     const display = document.getElementById('emojiClues');
     const clueDiv = document.createElement('div');
@@ -200,6 +251,7 @@ function addClue(clue) {
     display.scrollTop = display.scrollHeight;
 }
 
+/** Clears all displayed emoji clues and resets the guess input field. */
 function clearClues() {
     document.getElementById('emojiClues').innerHTML = '';
     document.getElementById('guessInput').value = '';
