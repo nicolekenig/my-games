@@ -151,12 +151,12 @@ describe('Forbidden Word — round flow', () => {
         });
     });
 
-    test('forbiddenUsed emits forbiddenFail with the describer id', done => {
+    test('forbiddenUsed emits roundEnded with guessed: false', done => {
         host.emit('startRound');
         host.once('roundStarted', () => {
             host.emit('forbiddenUsed');
-            guest.once('forbiddenFail', ({ describerId }) => {
-                expect(typeof describerId).toBe('string');
+            guest.once('roundEnded', ({ guessed }) => {
+                expect(guessed).toBe(false);
                 done();
             });
         });

@@ -19,6 +19,11 @@
   },
   "jest": {
     "testTimeout": 10000,
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/.claude/",
+      "/tests/e2e/"
+    ]
   }
 }
