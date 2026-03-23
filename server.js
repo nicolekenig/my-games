@@ -9,10 +9,15 @@ function json(res, status, data) {
     res.end(JSON.stringify(data));
 }
 
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN || 'change-me';
+
 function parseBody(req) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         let body = '';
-        req.on('data', chunk => body += chunk.toString());
+        req.on('data', chunk => {
+            body += chunk.toString();
+            if (body.length > 10_000) { req.destroy(); resolve({}); }
+        });
         req.on('end', () => { try { resolve(JSON.parse(body)); } catch { resolve({}); } });
     });
 }
@@ -23,6 +28,12 @@ const server = http.createServer(async (req, res) => {
     const url = req.url.split('?')[0];
 
     // ─── Add-Words API ────────────────────────────────────────────
+    if (url.startsWith('/api/words/') && req.method === 'POST') {
+        if (req.headers['x-admin-token'] !== ADMIN_TOKEN) {
+            return json(res, 401, { error: 'Unauthorized' });
+        }
+    }
+
     if (url === '/api/words/forbidden' && req.method === 'POST') {
         const { word, forbidden } = await parseBody(req);
         const normalized = (word || '').trim().toUpperCase();

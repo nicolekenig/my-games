@@ -73,10 +73,15 @@ function resetForms() {
 }
 
 // ─── API call ─────────────────────────────────────────────────────
+const ADMIN_TOKEN = window.ADMIN_TOKEN || 'change-me';
+
 async function postWord(endpoint, body) {
     const res = await fetch(endpoint, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'x-admin-token': ADMIN_TOKEN,
+        },
         body: JSON.stringify(body),
     });
     return { ok: res.ok, status: res.status, data: await res.json() };
