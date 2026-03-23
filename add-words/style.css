@@ -81,6 +81,7 @@ h1 {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    filter: drop-shadow(0 0 12px rgba(249,115,22,0.55)) drop-shadow(0 0 24px rgba(249,115,22,0.25));
 }
 
 .subtitle {
@@ -108,7 +109,7 @@ h1 {
     text-align: left;
     transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
     width: 100%;
-    box-shadow: 0 0 20px rgba(249,115,22,0.04), inset 0 1px 0 rgba(249,115,22,0.04);
+    box-shadow: 0 0 20px var(--orange-glow-sm), inset 0 1px 0 rgba(249,115,22,0.06);
 }
 
 .game-select-btn:hover {
@@ -189,7 +190,7 @@ input[type="text"]::placeholder { color: var(--text-muted); }
     cursor: pointer;
     transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
     letter-spacing: 0.3px;
-    box-shadow: 0 0 20px var(--orange-glow-sm);
+    box-shadow: 0 0 20px var(--orange-glow), 0 0 40px rgba(249,115,22,0.15);
 }
 .submit-btn:hover {
     background: var(--orange-dark);

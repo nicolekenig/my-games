@@ -4,6 +4,13 @@ const path = require('path');
 const { Server } = require('socket.io');
 
 // ─── API helpers ──────────────────────────────────────────────────
+/**
+ * Writes a JSON response with the given HTTP status code.
+ *
+ * @param {http.ServerResponse} res - The HTTP response object.
+ * @param {number} status - The HTTP status code to send.
+ * @param {Object} data - The data to serialize as the response body.
+ */
 function json(res, status, data) {
     res.writeHead(status, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(data));
@@ -11,6 +18,13 @@ function json(res, status, data) {
 
 const ADMIN_TOKEN = process.env.ADMIN_TOKEN || 'change-me';
 
+/**
+ * Reads and parses the JSON body from an incoming HTTP request.
+ * Destroys the request if the body exceeds 10 KB.
+ *
+ * @param {http.IncomingMessage} req - The HTTP request object.
+ * @returns {Promise<Object>} Resolves with the parsed body, or an empty object on error.
+ */
 function parseBody(req) {
     return new Promise((resolve, reject) => {
         let body = '';
@@ -160,6 +174,11 @@ const forbiddenRoom = {
     usedCards:      [],
 };
 
+/**
+ * Returns the current Forbidden Word player list with id, name, isHost, and isDescriber flags.
+ *
+ * @returns {Array<Object>} The formatted player list.
+ */
 function getForbiddenPlayerList() {
     return forbiddenRoom.playerOrder.map(id => ({
         id,
@@ -169,6 +188,11 @@ function getForbiddenPlayerList() {
     }));
 }
 
+/**
+ * Picks a random unused card from FORBIDDEN_CARDS, avoiding repeats until the pool is exhausted.
+ *
+ * @returns {Object} A card object with `word` and `forbidden` properties.
+ */
 function pickForbiddenCard() {
     let pool = FORBIDDEN_CARDS.filter((_, i) => !forbiddenRoom.usedCards.includes(i));
     if (pool.length === 0) { forbiddenRoom.usedCards = []; pool = FORBIDDEN_CARDS; }
@@ -214,6 +238,11 @@ const emojiRoom = {
     usedWords:      [],
 };
 
+/**
+ * Returns the current Emoji Charades player list with id, name, isHost, and isDescriber flags.
+ *
+ * @returns {Array<Object>} The formatted player list.
+ */
 function getEmojiPlayerList() {
     return emojiRoom.playerOrder.map(id => ({
         id,
@@ -223,6 +252,11 @@ function getEmojiPlayerList() {
     }));
 }
 
+/**
+ * Picks a random unused word from EMOJI_WORDS, avoiding repeats until the pool is exhausted.
+ *
+ * @returns {string} The selected word.
+ */
 function pickEmojiWord() {
     let pool = EMOJI_WORDS.filter((_, i) => !emojiRoom.usedWords.includes(i));
     if (pool.length === 0) { emojiRoom.usedWords = []; pool = EMOJI_WORDS; }
